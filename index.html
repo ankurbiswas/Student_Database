@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Postgraduate Student Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .login-section {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 400px;
+            margin: 100px auto;
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .tab-button {
+            padding: 15px 25px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-button.active {
+            background: white;
+            border-bottom-color: #667eea;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .tab-button:hover {
+            background: #e9ecef;
+        }
+
+        .tab-content {
+            padding: 30px;
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-row-full {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-row-three {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: end;
+        }
+
+        .search-container > div {
+            flex: 1;
+        }
+
+        .student-card {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .student-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .student-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .student-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .student-enrollment {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .student-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .detail-value {
+            color: #333;
+        }
+
+        .photo-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #667eea;
+            margin-bottom: 10px;
+        }
+
+        .file-upload-area {
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 15px;
+            background: #f8f9ff;
+        }
+
+        .performance-table, .attendance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .performance-table th, .performance-table td,
+        .attendance-table th, .attendance-table td {
+            border: 1px solid #dee2e6;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .performance-table th, .attendance-table th {
+            background: #f8f9fa;
+            font-weight: bold;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: black;
+        }
+
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .skill-tag {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-block;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .student-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row, .form-row-three {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab-button {
+                flex: 1;
+                min-width: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Section -->
+        <div id="loginSection" class="login-section">
+            <h2 style="text-align: center; margin-bottom: 30px; color: #667eea;">Student Management System</h2>
+            
+            <div style="margin-bottom: 20px;">
+                <label>
+                    <input type="radio" name="loginType" value="admin" checked>
+                    Admin Login
+                </label>
+                <label style="margin-left: 20px;">
+                    <input type="radio" name="loginType" value="student">
+                    Student Login
+                </label>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username/Enrollment Number:</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+            </form>
+
+            <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; font-size: 14px;">
+                <strong>Demo Credentials:</strong><br>
+                Admin: admin / admin123<br>
+                Student: STU001 / student123
+            </div>
+        </div>
+
+        <!-- Main Application -->
+        <div id="mainApp" style="display: none;">
+            <div class="header">
+                <div class="logo">🎓 Student Management System</div>
+                <div class="user-info">
+                    <span id="welcomeText">Welcome, Admin</span>
+                    <button class="btn btn-secondary" onclick="logout()">Logout</button>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="nav-tabs">
+                    <button class="tab-button active" onclick="showTab('dashboard')">Dashboard</button>
+                    <button class="tab-button" onclick="showTab('add-student')" id="addStudentTab">Add Student</button>
+                    <button class="tab-button" onclick="showTab('view-students')">View Students</button>
+                    <button class="tab-button" onclick="showTab('search-students')">Search Students</button>
+                </div>
+
+                <!-- Dashboard Tab -->
+                <div id="dashboard" class="tab-content active">
+                    <h2>Dashboard</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
+                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 15px; text-align: center;">
+                            <h3 style="margin-bottom: 10px;">Total Students</h3>
+                            <div style="font-size: 36px; font-weight: bold;" id="totalStudents">0</div>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 30px; border-radius: 15px; text-align: center;">
+                            <h3 style="margin-bottom: 10px;">Placed Students</h3>
+                            <div style="font-size: 36px; font-weight: bold;" id="placedStudents">0</div>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 30px; border-radius: 15px; text-align: center;">
+                            <h3 style="margin-bottom: 10px;">Current Semester</h3>
+                            <div style="font-size: 36px; font-weight: bold;">Fall 2024</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Student Tab -->
+                <div id="add-student" class="tab-content">
+                    <h2>Add New Student</h2>
+                    <form id="studentForm">
+                        <!-- Personal Information -->
+                        <h3 style="color: #667eea; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 5px;">Personal Information</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fullName">Full Name *</label>
+                                <input type="text" id="fullName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="enrollmentNumber">Enrollment Number *</label>
+                                <input type="text" id="enrollmentNumber" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row-three">
+                            <div class="form-group">
+                                <label for="dateOfBirth">Date of Birth *</label>
+                                <input type="date" id="dateOfBirth" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="gender">Gender *</label>
+                                <select id="gender" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="contactNumber">Contact Number *</label>
+                                <input type="tel" id="contactNumber" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="admissionDate">Admission Date *</label>
+                                <input type="date" id="admissionDate" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row-full">
+                            <div class="form-group">
+                                <label for="address">Address *</label>
+                                <textarea id="address" required></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Academic Information -->
+                        <h3 style="color: #667eea; margin-bottom: 15px; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 5px;">Academic Information</h3>
+                        
+                        <div class="form-row-three">
+                            <div class="form-group">
+                                <label for="programName">Program Name *</label>
+                                <select id="programName" required>
+                                    <option value="">Select Program</option>
+                                    <option value="MBA">MBA</option>
+                                    <option value="M.Tech">M.Tech</option>
+                                    <option value="M.Sc">M.Sc</option>
+                                    <option value="MA">MA</option>
+                                    <option value="MCA">MCA</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="specialization">Specialization</label>
+                                <input type="text" id="specialization">
+                            </div>
+                            <div class="form-group">
+                                <label for="academicYear">Academic Year *</label>
+                                <select id="academicYear" required>
+                                    <option value="">Select Year</option>
+                                    <option value="2023-24">2023-24</option>
+                                    <option value="2024-25">2024-25</option>
+                                    <option value="2025-26">2025-26</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="semester">Current Semester *</label>
+                                <select id="semester" required>
+                                    <option value="">Select Semester</option>
+                                    <option value="1">Semester 1</option>
+                                    <option value="2">Semester 2</option>
+                                    <option value="3">Semester 3</option>
+                                    <option value="4">Semester 4</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="previousQualifications">Previous Qualifications</label>
+                                <input type="text" id="previousQualifications" placeholder="e.g., B.Tech CSE, CGPA: 8.5">
+                            </div>
+                        </div>
+
+                        <!-- Guardian Information -->
+                        <h3 style="color: #667eea; margin-bottom: 15px; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 5px;">Guardian Information</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="guardianName">Guardian Name</label>
+                                <input type="text" id="guardianName">
+                            </div>
+                            <div class="form-group">
+                                <label for="guardianContact">Guardian Contact</label>
+                                <input type="tel" id="guardianContact">
+                            </div>
+                        </div>
+
+                        <!-- Skills & Additional Information -->
+                        <h3 style="color: #667eea; margin-bottom: 15px; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 5px;">Skills & Additional Information</h3>
+                        
+                        <div class="form-row-full">
+                            <div class="form-group">
+                                <label for="skills">Skills and Certifications</label>
+                                <textarea id="skills" placeholder="Enter skills separated by commas (e.g., Python, Java, Data Analysis)"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-row-full">
+                            <div class="form-group">
+                                <label for="internshipDetails">Internship/Project Details</label>
+                                <textarea id="internshipDetails" placeholder="Describe internships, projects, and work experience"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- File Uploads -->
+                        <h3 style="color: #667eea; margin-bottom: 15px; margin-top: 30px; border-bottom: 2px solid #eee; padding-bottom: 5px;">Document Uploads</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="studentPhoto">Student Photo</label>
+                                <div class="file-upload-area">
+                                    <input type="file" id="studentPhoto" accept="image/*" style="display: none;">
+                                    <div onclick="document.getElementById('studentPhoto').click()" style="cursor: pointer;">
+                                        <div>📷 Click to upload photo</div>
+                                        <div style="font-size: 12px; color: #666; margin-top: 5px;">JPG, PNG files accepted</div>
+                                    </div>
+                                    <img id="photoPreview" class="photo-preview" style="display: none; margin-top: 10px;">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="resumeUpload">Resume/CV Upload</label>
+                                <div class="file-upload-area">
+                                    <input type="file" id="resumeUpload" accept=".pdf,.doc,.docx" style="display: none;">
+                                    <div onclick="document.getElementById('resumeUpload').click()" style="cursor: pointer;">
+                                        <div>📄 Click to upload resume</div>
+                                        <div style="font-size: 12px; color: #666; margin-top: 5px;">PDF, DOC, DOCX files accepted</div>
+                                        <div id="resumeFileName" style="margin-top: 5px; font-weight: bold;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 30px;">
+                            <button type="submit" class="btn btn-primary">Add Student</button>
+                            <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset Form</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- View Students Tab -->
+                <div id="view-students" class="tab-content">
+                    <h2>All Students</h2>
+                    <div id="studentsContainer">
+                        <!-- Students will be displayed here -->
+                    </div>
+                </div>
+
+                <!-- Search Students Tab -->
+                <div id="search-students" class="tab-content">
+                    <h2>Search Students</h2>
+                    <div class="search-container">
+                        <div class="form-group">
+                            <label for="searchName">Search by Name</label>
+                            <input type="text" id="searchName" placeholder="Enter student name">
+                        </div>
+                        <div class="form-group">
+                            <label for="searchEnrollment">Search by Enrollment</label>
+                            <input type="text" id="searchEnrollment" placeholder="Enter enrollment number">
+                        </div>
+                        <div class="form-group">
+                            <label for="searchProgram">Filter by Program</label>
+                            <select id="searchProgram">
+                                <option value="">All Programs</option>
+                                <option value="MBA">MBA</option>
+                                <option value="M.Tech">M.Tech</option>
+                                <option value="M.Sc">M.Sc</option>
+                                <option value="MA">MA</option>
+                                <option value="MCA">MCA</option>
+                            </select>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary" onclick="searchStudents()">Search</button>
+                            <button class="btn btn-secondary" onclick="clearSearch()">Clear</button>
+                        </div>
+                    </div>
+                    <div id="searchResults">
+                        <!-- Search results will be displayed here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Student Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Edit Student Information</h2>
+            <div id="editFormContainer">
+                <!-- Edit form will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- View Student Details Modal -->
+    <div id="viewModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Student Details</h2>
+            <div id="viewDetailsContainer">
+                <!-- Student details will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Application state
+        let students = [];
+        let currentUser = null;
+        let editingStudentId = null;
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSampleData();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Login form
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+
+            // Student form
+            document.getElementById('studentForm').addEventListener('submit', handleAddStudent);
+
+            // File upload previews
+            document.getElementById('studentPhoto').addEventListener('change', handlePhotoUpload);
+            document.getElementById('resumeUpload').addEventListener('change', handleResumeUpload);
+
+            // Modal close buttons
+            document.querySelectorAll('.close').forEach(closeBtn => {
+                closeBtn.addEventListener('click', function() {
+                    this.closest('.modal').style.display = 'none';
+                });
+            });
+
+            // Search functionality
+            document.getElementById('searchName').addEventListener('input', searchStudents);
+            document.getElementById('searchEnrollment').addEventListener('input', searchStudents);
+            document.getElementById('searchProgram').addEventListener('change', searchStudents);
+        }
+
+        function loadSampleData() {
+            students = [
+                {
+                    id: 1,
+                    fullName: "Rahul Kumar",
+                    enrollmentNumber: "STU001",
+                    dateOfBirth: "1998-05-15",
+                    gender: "Male",
+                    contactNumber: "+91-9876543210",
+                    email: "rahul.kumar@email.com",
+                    address: "123 Park Street, Kolkata, West Bengal",
+                    programName: "MBA",
+                    specialization: "Finance",
+                    semester: "2",
+                    academicYear: "2024-25",
+                    previousQualifications: "B.Com, CGPA: 8.2",
+                    admissionDate: "2024-07-15",
+                    guardianName: "Suresh Kumar",
+                    guardianContact: "+91-9876543211",
+                    skills: "Financial Analysis, Excel, PowerBI, Investment Planning",
+                    internshipDetails: "Summer Intern at HDFC Bank - Investment Advisory Department",
+                    academicPerformance: [
+                        { semester: 1, subjects: [{ name: "Financial Management", marks: 85 }, { name: "Marketing", marks: 78 }] }
+                    ],
+                    attendance: [
+                        { semester: 1, totalClasses: 120, attended: 108, percentage: 90 }
+                    ],
+                    placementStatus: "Not Placed"
+                },
+                {
+                    id: 2,
+                    fullName: "Priya Sharma",
+                    enrollmentNumber: "STU002",
+                    dateOfBirth: "1997-08-22",
+                    gender: "Female",
+                    contactNumber: "+91-9876543212",
+                    email: "priya.sharma@email.com",
+                    address: "456 Salt Lake, Kolkata, West Bengal",
+                    programName: "M.Tech",
+                    specialization: "Computer Science",
+                    semester: "3",
+                    academicYear: "2023-24",
+                    previousQualifications: "B.Tech CSE, CGPA: 9.1",
+                    admissionDate: "2023-07-20",
+                    guardianName: "Rajesh Sharma",
+                    guardianContact: "+91-9876543213",
+                    skills: "Python, Machine Learning, Deep Learning, TensorFlow, AWS",
+                    internshipDetails: "Research Intern at IIT Bombay - AI/ML Lab",
+                    academicPerformance: [
+                        { semester: 1, subjects: [{ name: "Advanced Algorithms", marks: 92 }, { name: "Machine Learning", marks: 88 }] },
+                        { semester: 2, subjects: [{ name: "Deep Learning", marks: 94 }, { name: "Computer Vision", marks: 89 }] }
+                    ],
+                    attendance: [
+                        { semester: 1, totalClasses: 100, attended: 96, percentage: 96 },
+                        { semester: 2, totalClasses: 110, attended: 105, percentage: 95 }
+                    ],
+                    placementStatus: "Placed",
+                    placementDetails: {
+                        company: "Google India",
+                        offer: "₹28,00,000 CTC",
+                        role: "Software Engineer - ML"
+                    }
+                }
+            ];
+            updateDashboard();
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const loginType = document.querySelector('input[name="loginType"]:checked').value;
+
+            if (loginType === 'admin' && username === 'admin' && password === 'admin123') {
+                currentUser = { type: 'admin', username: 'Admin' };
+                showMainApp();
+            } else if (loginType === 'student') {
+                const student = students.find(s => s.enrollmentNumber === username && password === 'student123');
+                if (student) {
+                    currentUser = { type: 'student', username: student.fullName, studentData: student };
+                    showMainApp();
+                } else {
+                    showAlert('Invalid credentials', 'error');
+                }
+            } else {
+                showAlert('Invalid credentials', 'error');
+            }
+        }
+
+        function showMainApp() {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
+            
+            const welcomeText = document.getElementById('welcomeText');
+            welcomeText.textContent = `Welcome, ${currentUser.username}`;
+
+            // Hide admin-only features for students
+            if (currentUser.type === 'student') {
+                document.getElementById('addStudentTab').style.display = 'none';
+                showTab('dashboard');
+                // Show only current student's data
+                displayStudentData();
+            } else {
+                displayAllStudents();
+            }
+            
+            updateDashboard();
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('mainApp').style.display = 'none';
+            document.getElementById('loginForm').reset();
+        }
+
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab button
+            event.target.classList.add('active');
+            
+            // Refresh data when viewing students
+            if (tabName === 'view-students') {
+                displayAllStudents();
+            }
+        }
+
+        function handleAddStudent(e) {
+            e.preventDefault();
+            
+            const formData = {
+                id: Date.now(), // Simple ID generation
+                fullName: document.getElementById('fullName').value,
+                enrollmentNumber: document.getElementById('enrollmentNumber').value,
+                dateOfBirth: document.getElementById('dateOfBirth').value,
+                gender: document.getElementById('gender').value,
+                contactNumber: document.getElementById('contactNumber').value,
+                email: document.getElementById('email').value,
+                address: document.getElementById('address').value,
+                programName: document.getElementById('programName').value,
+                specialization: document.getElementById('specialization').value,
+                semester: document.getElementById('semester').value,
+                academicYear: document.getElementById('academicYear').value,
+                previousQualifications: document.getElementById('previousQualifications').value,
+                admissionDate: document.getElementById('admissionDate').value,
+                guardianName: document.getElementById('guardianName').value,
+                guardianContact: document.getElementById('guardianContact').value,
+                skills: document.getElementById('skills').value,
+                internshipDetails: document.getElementById('internshipDetails').value,
+                academicPerformance: [],
+                attendance: [],
+                placementStatus: "Not Placed"
+            };
+
+            // Check for duplicate enrollment number
+            if (students.some(s => s.enrollmentNumber === formData.enrollmentNumber)) {
+                showAlert('Enrollment number already exists!', 'error');
+                return;
+            }
+
+            students.push(formData);
+            showAlert('Student added successfully!', 'success');
+            resetForm();
+            updateDashboard();
+        }
+
+        function resetForm() {
+            document.getElementById('studentForm').reset();
+            document.getElementById('photoPreview').style.display = 'none';
+            document.getElementById('resumeFileName').textContent = '';
+        }
+
+        function handlePhotoUpload(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('photoPreview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function handleResumeUpload(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('resumeFileName').textContent = `Selected: ${file.name}`;
+            }
+        }
+
+        function displayAllStudents() {
+            if (currentUser.type === 'student') {
+                displayStudentData();
+                return;
+            }
+
+            const container = document.getElementById('studentsContainer');
+            container.innerHTML = '';
+
+            if (students.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #666; padding: 40px;">No students found.</p>';
+                return;
+            }
+
+            students.forEach(student => {
+                const studentCard = createStudentCard(student);
+                container.appendChild(studentCard);
+            });
+        }
+
+        function displayStudentData() {
+            if (currentUser.type !== 'student') return;
+
+            const container = document.getElementById('studentsContainer');
+            const student = currentUser.studentData;
+            container.innerHTML = '';
+            
+            const studentCard = createStudentCard(student, true);
+            container.appendChild(studentCard);
+        }
+
+        function createStudentCard(student, isStudentView = false) {
+            const card = document.createElement('div');
+            card.className = 'student-card';
+            
+            const skillsArray = student.skills ? student.skills.split(',').map(s => s.trim()) : [];
+            const skillsHtml = skillsArray.map(skill => `<span class="skill-tag">${skill}</span>`).join('');
+            
+            const placementInfo = student.placementStatus === 'Placed' && student.placementDetails ? 
+                `<div class="detail-item">
+                    <span class="detail-label">Company:</span>
+                    <span class="detail-value">${student.placementDetails.company}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Offer:</span>
+                    <span class="detail-value">${student.placementDetails.offer}</span>
+                </div>` : '';
+
+            card.innerHTML = `
+                <div class="student-header">
+                    <div>
+                        <div class="student-name">${student.fullName}</div>
+                        <div class="student-enrollment">Enrollment: ${student.enrollmentNumber}</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="background: ${student.placementStatus === 'Placed' ? '#28a745' : '#ffc107'}; 
+                                     color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px;">
+                            ${student.placementStatus}
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="student-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Program:</span>
+                        <span class="detail-value">${student.programName}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Specialization:</span>
+                        <span class="detail-value">${student.specialization || 'N/A'}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Semester:</span>
+                        <span class="detail-value">${student.semester}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Email:</span>
+                        <span class="detail-value">${student.email}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Contact:</span>
+                        <span class="detail-value">${student.contactNumber}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Academic Year:</span>
+                        <span class="detail-value">${student.academicYear}</span>
+                    </div>
+                    ${placementInfo}
+                </div>
+                
+                ${student.skills ? `<div style="margin-top: 15px;">
+                    <strong style="color: #667eea;">Skills:</strong>
+                    <div class="skills-container">${skillsHtml}</div>
+                </div>` : ''}
+                
+                <div class="student-actions">
+                    <button class="btn btn-primary" onclick="viewStudentDetails(${student.id})">View Details</button>
+                    ${!isStudentView ? `
+                        <button class="btn btn-success" onclick="editStudent(${student.id})">Edit</button>
+                        <button class="btn btn-secondary" onclick="managePerformance(${student.id})">Academic Records</button>
+                        <button class="btn btn-danger" onclick="deleteStudent(${student.id})">Delete</button>
+                    ` : ''}
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function viewStudentDetails(studentId) {
+            const student = students.find(s => s.id === studentId);
+            if (!student) return;
+
+            const modal = document.getElementById('viewModal');
+            const container = document.getElementById('viewDetailsContainer');
+            
+            const skillsArray = student.skills ? student.skills.split(',').map(s => s.trim()) : [];
+            const skillsHtml = skillsArray.map(skill => `<span class="skill-tag">${skill}</span>`).join('');
+            
+            // Generate academic performance table
+            let performanceTable = '';
+            if (student.academicPerformance && student.academicPerformance.length > 0) {
+                performanceTable = `
+                    <h4 style="color: #667eea; margin-bottom: 10px;">Academic Performance</h4>
+                    <table class="performance-table">
+                        <thead>
+                            <tr>
+                                <th>Semester</th>
+                                <th>Subject</th>
+                                <th>Marks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${student.academicPerformance.map(sem => 
+                                sem.subjects.map(subject => 
+                                    `<tr>
+                                        <td>Semester ${sem.semester}</td>
+                                        <td>${subject.name}</td>
+                                        <td>${subject.marks}</td>
+                                    </tr>`
+                                ).join('')
+                            ).join('')}
+                        </tbody>
+                    </table>
+                `;
+            }
+            
+            // Generate attendance table
+            let attendanceTable = '';
+            if (student.attendance && student.attendance.length > 0) {
+                attendanceTable = `
+                    <h4 style="color: #667eea; margin-bottom: 10px; margin-top: 20px;">Attendance Records</h4>
+                    <table class="attendance-table">
+                        <thead>
+                            <tr>
+                                <th>Semester</th>
+                                <th>Total Classes</th>
+                                <th>Attended</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${student.attendance.map(att => 
+                                `<tr>
+                                    <td>Semester ${att.semester}</td>
+                                    <td>${att.totalClasses}</td>
+                                    <td>${att.attended}</td>
+                                    <td>${att.percentage}%</td>
+                                </tr>`
+                            ).join('')}
+                        </tbody>
+                    </table>
+                `;
+            }
+
+            const placementDetails = student.placementStatus === 'Placed' && student.placementDetails ? `
+                <div style="background: #d4edda; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                    <h4 style="color: #155724; margin-bottom: 10px;">Placement Details</h4>
+                    <p><strong>Company:</strong> ${student.placementDetails.company}</p>
+                    <p><strong>Role:</strong> ${student.placementDetails.role}</p>
+                    <p><strong>Offer:</strong> ${student.placementDetails.offer}</p>
+                </div>
+            ` : '';
+
+            container.innerHTML = `
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+                    <div>
+                        <h3 style="color: #667eea; margin-bottom: 20px;">${student.fullName}</h3>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                            <div><strong>Enrollment:</strong> ${student.enrollmentNumber}</div>
+                            <div><strong>Email:</strong> ${student.email}</div>
+                            <div><strong>DOB:</strong> ${new Date(student.dateOfBirth).toLocaleDateString()}</div>
+                            <div><strong>Gender:</strong> ${student.gender}</div>
+                            <div><strong>Contact:</strong> ${student.contactNumber}</div>
+                            <div><strong>Program:</strong> ${student.programName}</div>
+                            <div><strong>Specialization:</strong> ${student.specialization || 'N/A'}</div>
+                            <div><strong>Semester:</strong> ${student.semester}</div>
+                            <div><strong>Academic Year:</strong> ${student.academicYear}</div>
+                            <div><strong>Admission Date:</strong> ${new Date(student.admissionDate).toLocaleDateString()}</div>
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <strong>Address:</strong><br>
+                            ${student.address}
+                        </div>
+                        
+                        ${student.previousQualifications ? `
+                            <div style="margin-bottom: 20px;">
+                                <strong>Previous Qualifications:</strong><br>
+                                ${student.previousQualifications}
+                            </div>
+                        ` : ''}
+                        
+                        ${student.guardianName ? `
+                            <div style="margin-bottom: 20px;">
+                                <strong>Guardian:</strong> ${student.guardianName}<br>
+                                <strong>Guardian Contact:</strong> ${student.guardianContact}
+                            </div>
+                        ` : ''}
+                        
+                        ${student.internshipDetails ? `
+                            <div style="margin-bottom: 20px;">
+                                <strong>Internship/Project Details:</strong><br>
+                                ${student.internshipDetails}
+                            </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div>
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <div style="width: 120px; height: 120px; border-radius: 50%; background: #f8f9fa; 
+                                        display: flex; align-items: center; justify-content: center; margin: 0 auto; 
+                                        border: 3px solid #667eea; font-size: 48px;">
+                                👤
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <span style="background: ${student.placementStatus === 'Placed' ? '#28a745' : '#ffc107'}; 
+                                         color: white; padding: 8px 20px; border-radius: 25px; font-weight: bold;">
+                                ${student.placementStatus}
+                            </span>
+                        </div>
+                        
+                        ${student.skills ? `
+                            <div style="margin-bottom: 20px;">
+                                <h4 style="color: #667eea; margin-bottom: 10px;">Skills & Certifications</h4>
+                                <div class="skills-container">${skillsHtml}</div>
+                            </div>
+                        ` : ''}
+                        
+                        ${placementDetails}
+                    </div>
+                </div>
+                
+                ${performanceTable}
+                ${attendanceTable}
+            `;
+            
+            modal.style.display = 'block';
+        }
+
+        function editStudent(studentId) {
+            const student = students.find(s => s.id === studentId);
+            if (!student) return;
+
+            editingStudentId = studentId;
+            const modal = document.getElementById('editModal');
+            const container = document.getElementById('editFormContainer');
+            
+            container.innerHTML = `
+                <form id="editStudentForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Full Name *</label>
+                            <input type="text" id="editFullName" value="${student.fullName}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Enrollment Number *</label>
+                            <input type="text" id="editEnrollmentNumber" value="${student.enrollmentNumber}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Email Address *</label>
+                            <input type="email" id="editEmail" value="${student.email}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Contact Number *</label>
+                            <input type="tel" id="editContactNumber" value="${student.contactNumber}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Program Name *</label>
+                            <select id="editProgramName" required>
+                                <option value="MBA" ${student.programName === 'MBA' ? 'selected' : ''}>MBA</option>
+                                <option value="M.Tech" ${student.programName === 'M.Tech' ? 'selected' : ''}>M.Tech</option>
+                                <option value="M.Sc" ${student.programName === 'M.Sc' ? 'selected' : ''}>M.Sc</option>
+                                <option value="MA" ${student.programName === 'MA' ? 'selected' : ''}>MA</option>
+                                <option value="MCA" ${student.programName === 'MCA' ? 'selected' : ''}>MCA</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Specialization</label>
+                            <input type="text" id="editSpecialization" value="${student.specialization || ''}">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Current Semester *</label>
+                            <select id="editSemester" required>
+                                <option value="1" ${student.semester === '1' ? 'selected' : ''}>Semester 1</option>
+                                <option value="2" ${student.semester === '2' ? 'selected' : ''}>Semester 2</option>
+                                <option value="3" ${student.semester === '3' ? 'selected' : ''}>Semester 3</option>
+                                <option value="4" ${student.semester === '4' ? 'selected' : ''}>Semester 4</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Placement Status</label>
+                            <select id="editPlacementStatus">
+                                <option value="Not Placed" ${student.placementStatus === 'Not Placed' ? 'selected' : ''}>Not Placed</option>
+                                <option value="Placed" ${student.placementStatus === 'Placed' ? 'selected' : ''}>Placed</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row-full">
+                        <div class="form-group">
+                            <label>Address *</label>
+                            <textarea id="editAddress" required>${student.address}</textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row-full">
+                        <div class="form-group">
+                            <label>Skills and Certifications</label>
+                            <textarea id="editSkills">${student.skills || ''}</textarea>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <button type="submit" class="btn btn-primary">Update Student</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('editModal')">Cancel</button>
+                    </div>
+                </form>
+            `;
+            
+            document.getElementById('editStudentForm').addEventListener('submit', handleEditStudent);
+            modal.style.display = 'block';
+        }
+
+        function handleEditStudent(e) {
+            e.preventDefault();
+            
+            const studentIndex = students.findIndex(s => s.id === editingStudentId);
+            if (studentIndex === -1) return;
+            
+            const updatedData = {
+                ...students[studentIndex],
+                fullName: document.getElementById('editFullName').value,
+                enrollmentNumber: document.getElementById('editEnrollmentNumber').value,
+                email: document.getElementById('editEmail').value,
+                contactNumber: document.getElementById('editContactNumber').value,
+                programName: document.getElementById('editProgramName').value,
+                specialization: document.getElementById('editSpecialization').value,
+                semester: document.getElementById('editSemester').value,
+                placementStatus: document.getElementById('editPlacementStatus').value,
+                address: document.getElementById('editAddress').value,
+                skills: document.getElementById('editSkills').value
+            };
+            
+            students[studentIndex] = updatedData;
+            showAlert('Student updated successfully!', 'success');
+            closeModal('editModal');
+            displayAllStudents();
+            updateDashboard();
+        }
+
+        function deleteStudent(studentId) {
+            if (confirm('Are you sure you want to delete this student? This action cannot be undone.')) {
+                students = students.filter(s => s.id !== studentId);
+                showAlert('Student deleted successfully!', 'success');
+                displayAllStudents();
+                updateDashboard();
+            }
+        }
+
+        function managePerformance(studentId) {
+            const student = students.find(s => s.id === studentId);
+            if (!student) return;
+
+            const modal = document.getElementById('editModal');
+            const container = document.getElementById('editFormContainer');
+            
+            // Get existing performance data
+            const existingPerformance = student.academicPerformance || [];
+            const existingAttendance = student.attendance || [];
+            
+            container.innerHTML = `
+                <h3>Academic Records - ${student.fullName}</h3>
+                
+                <div style="margin-bottom: 30px;">
+                    <h4 style="color: #667eea;">Add Academic Performance</h4>
+                    <form id="performanceForm">
+                        <div class="form-row-three">
+                            <div class="form-group">
+                                <label>Semester</label>
+                                <select id="perfSemester" required>
+                                    <option value="">Select Semester</option>
+                                    <option value="1">Semester 1</option>
+                                    <option value="2">Semester 2</option>
+                                    <option value="3">Semester 3</option>
+                                    <option value="4">Semester 4</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Subject</label>
+                                <input type="text" id="perfSubject" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Marks</label>
+                                <input type="number" id="perfMarks" min="0" max="100" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success">Add Performance Record</button>
+                    </form>
+                </div>
+                
+                <div style="margin-bottom: 30px;">
+                    <h4 style="color: #667eea;">Add Attendance Record</h4>
+                    <form id="attendanceForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Semester</label>
+                                <select id="attSemester" required>
+                                    <option value="">Select Semester</option>
+                                    <option value="1">Semester 1</option>
+                                    <option value="2">Semester 2</option>
+                                    <option value="3">Semester 3</option>
+                                    <option value="4">Semester 4</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Total Classes</label>
+                                <input type="number" id="attTotal" min="1" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Classes Attended</label>
+                                <input type="number" id="attAttended" min="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Percentage</label>
+                                <input type="number" id="attPercentage" min="0" max="100" step="0.1" readonly>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success">Add Attendance Record</button>
+                    </form>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('editModal')">Close</button>
+                </div>
+            `;
+            
+            // Setup event listeners for the forms
+            document.getElementById('performanceForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                addPerformanceRecord(studentId);
+            });
+            
+            document.getElementById('attendanceForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                addAttendanceRecord(studentId);
+            });
+            
+            // Auto-calculate attendance percentage
+            document.getElementById('attTotal').addEventListener('input', calculatePercentage);
+            document.getElementById('attAttended').addEventListener('input', calculatePercentage);
+            
+            modal.style.display = 'block';
+        }
+
+        function calculatePercentage() {
+            const total = parseInt(document.getElementById('attTotal').value) || 0;
+            const attended = parseInt(document.getElementById('attAttended').value) || 0;
+            const percentage = total > 0 ? ((attended / total) * 100).toFixed(1) : 0;
+            document.getElementById('attPercentage').value = percentage;
+        }
+
+        function addPerformanceRecord(studentId) {
+            const student = students.find(s => s.id === studentId);
+            if (!student) return;
+            
+            const semester = document.getElementById('perfSemester').value;
+            const subject = document.getElementById('perfSubject').value;
+            const marks = parseInt(document.getElementById('perfMarks').value);
+            
+            if (!student.academicPerformance) {
+                student.academicPerformance = [];
+            }
+            
+            let semesterRecord = student.academicPerformance.find(p => p.semester == semester);
+            if (!semesterRecord) {
+                semesterRecord = { semester: parseInt(semester), subjects: [] };
+                student.academicPerformance.push(semesterRecord);
+            }
+            
+            semesterRecord.subjects.push({ name: subject, marks: marks });
+            
+            showAlert('Performance record added successfully!', 'success');
+            document.getElementById('performanceForm').reset();
+        }
+
+        function addAttendanceRecord(studentId) {
+            const student = students.find(s => s.id === studentId);
+            if (!student) return;
+            
+            const semester = parseInt(document.getElementById('attSemester').value);
+            const totalClasses = parseInt(document.getElementById('attTotal').value);
+            const attended = parseInt(document.getElementById('attAttended').value);
+            const percentage = parseFloat(document.getElementById('attPercentage').value);
+            
+            if (!student.attendance) {
+                student.attendance = [];
+            }
+            
+            // Remove existing record for the same semester if any
+            student.attendance = student.attendance.filter(a => a.semester !== semester);
+            
+            student.attendance.push({
+                semester: semester,
+                totalClasses: totalClasses,
+                attended: attended,
+                percentage: percentage
+            });
+            
+            showAlert('Attendance record added successfully!', 'success');
+            document.getElementById('attendanceForm').reset();
+        }
+
+        function searchStudents() {
+            const nameQuery = document.getElementById('searchName').value.toLowerCase();
+            const enrollmentQuery = document.getElementById('searchEnrollment').value.toLowerCase();
+            const programFilter = document.getElementById('searchProgram').value;
+            
+            let filteredStudents = students.filter(student => {
+                const matchName = !nameQuery || student.fullName.toLowerCase().includes(nameQuery);
+                const matchEnrollment = !enrollmentQuery || student.enrollmentNumber.toLowerCase().includes(enrollmentQuery);
+                const matchProgram = !programFilter || student.programName === programFilter;
+                
+                return matchName && matchEnrollment && matchProgram;
+            });
+            
+            displaySearchResults(filteredStudents);
+        }
+
+        function displaySearchResults(filteredStudents) {
+            const container = document.getElementById('searchResults');
+            container.innerHTML = '';
+            
+            if (filteredStudents.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #666; padding: 40px;">No students found matching your criteria.</p>';
+                return;
+            }
+            
+            filteredStudents.forEach(student => {
+                const studentCard = createStudentCard(student);
+                container.appendChild(studentCard);
+            });
+        }
+
+        function clearSearch() {
+            document.getElementById('searchName').value = '';
+            document.getElementById('searchEnrollment').value = '';
+            document.getElementById('searchProgram').value = '';
+            document.getElementById('searchResults').innerHTML = '';
+        }
+
+        function updateDashboard() {
+            const totalStudents = students.length;
+            const placedStudents = students.filter(s => s.placementStatus === 'Placed').length;
+            
+            document.getElementById('totalStudents').textContent = totalStudents;
+            document.getElementById('placedStudents').textContent = placedStudents;
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function showAlert(message, type = 'success') {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'error'}`;
+            alertDiv.textContent = message;
+            
+            const container = document.querySelector('.tab-content.active') || document.querySelector('.login-section');
+            container.insertBefore(alertDiv, container.firstChild);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
